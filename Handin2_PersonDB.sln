@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Handin2_PersonDB", "Handin2_PersonDB\Handin2_PersonDB.csproj", "{9393BFA8-06E5-4EFB-8CE6-4327C52B2906}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PersonDB", "PersonDB\PersonDB.sqlproj", "{D67F50E6-4564-48D5-9DA5-BA45BABACD52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "DomainModel\DomainModel.csproj", "{C17B9BAA-8AB8-45C4-A97B-C24E0DFD476F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{5B513798-3774-4C9F-914D-8DAA8CBAC04B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLogic", "AppLogic\AppLogic.csproj", "{A91CE809-1266-47A4-94A9-FD43C6BC672A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonDBApp", "PersonDBApp\PersonDBApp.csproj", "{FF083580-6C8C-4063-8AAE-F299D8568A40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +19,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9393BFA8-06E5-4EFB-8CE6-4327C52B2906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9393BFA8-06E5-4EFB-8CE6-4327C52B2906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9393BFA8-06E5-4EFB-8CE6-4327C52B2906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9393BFA8-06E5-4EFB-8CE6-4327C52B2906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D67F50E6-4564-48D5-9DA5-BA45BABACD52}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C17B9BAA-8AB8-45C4-A97B-C24E0DFD476F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C17B9BAA-8AB8-45C4-A97B-C24E0DFD476F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C17B9BAA-8AB8-45C4-A97B-C24E0DFD476F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C17B9BAA-8AB8-45C4-A97B-C24E0DFD476F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B513798-3774-4C9F-914D-8DAA8CBAC04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B513798-3774-4C9F-914D-8DAA8CBAC04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B513798-3774-4C9F-914D-8DAA8CBAC04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B513798-3774-4C9F-914D-8DAA8CBAC04B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A91CE809-1266-47A4-94A9-FD43C6BC672A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A91CE809-1266-47A4-94A9-FD43C6BC672A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A91CE809-1266-47A4-94A9-FD43C6BC672A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A91CE809-1266-47A4-94A9-FD43C6BC672A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF083580-6C8C-4063-8AAE-F299D8568A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF083580-6C8C-4063-8AAE-F299D8568A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF083580-6C8C-4063-8AAE-F299D8568A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF083580-6C8C-4063-8AAE-F299D8568A40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

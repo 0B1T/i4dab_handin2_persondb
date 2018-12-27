@@ -6,38 +6,78 @@ namespace AppLogic
 {
     public class AppCalls
     {
-        // Create (Post) Utility Call:
+        // Create (Post) Utility Calls:
+        #region CREATE:
+
         public void CreatePer(Person newPerson)
         {
             new PersonDBUtil().AddPersonToDB(ref newPerson);
         }
 
-        // Read (Get) Utility Call:
+        public void CreateAdr(Adresse newAddress)
+        {
+            new PersonDBUtil().AddAddressToDB(ref newAddress);
+        }
+
+        public void CreateAltAdr(AltAdresse newAltAddress)
+        {
+            new PersonDBUtil().AddAltAddressToDB(ref newAltAddress);
+        }
+
+        public void CreateEmail(Email newEmail)
+        {
+            new PersonDBUtil().AddEmailToDB(ref newEmail);
+        }
+
+        public void CreatePhone(Telefon newPhone)
+        {
+            new PersonDBUtil().AddTelefonToDB(ref newPhone);
+        }
+
+        #endregion
+
+
+        // Read (Get) Utility Calls:
         public List<Person> ReadPer()
         {
-            var util = new PersonDBUtil();
-
-            return util.ReadPeople();
+            return new PersonDBUtil().ReadPeople();
         }
 
-        // Update (Put) Utility Call:
+        // Update (Put) Utility Calls:
+        #region UPDATE
+
         public void UpdatePer(Person currentPerson)
         {
-            var util = new PersonDBUtil();
-
-            util.UpdatePeople(ref currentPerson);
+            new PersonDBUtil().UpdatePeople(ref currentPerson);
         }
-        
-        // Delete Utility Call:
+
+        public void UpdateAdr(Person currentPerson)
+        {
+            new PersonDBUtil();
+        }
+
+        public void UpdateAltAdr(Person currentPerson)
+        {
+            new PersonDBUtil();
+        }
+
+        public void UpdateEmail(Person currentPerson)
+        {
+            new PersonDBUtil();
+        }
+
+        public void UpdatePhone(Person currentPerson)
+        {
+            new PersonDBUtil();
+        }
+
+        #endregion
+
+
+        // Delete Utility Calls:
         public void DeletePer(Person currentPerson)
         {
-            var util = new PersonDBUtil();
-
-            util.DeletePersonFromDB(ref currentPerson);
+            new PersonDBUtil().DeletePersonFromDB(ref currentPerson);
         }
-
-
-        // OTHER UTILITY FUNCTIONS:
-
     }
 }

@@ -175,6 +175,11 @@ namespace PersonDBApp
             while (UpdateMenuChoice(RenderUpdateMenu(pid), pid)) { }
         }
 
+        private static void DeleteAPerson()
+        {
+
+        }
+
 
         // MAIN MENU:
         #region MAIN MENU:
@@ -209,7 +214,7 @@ namespace PersonDBApp
                     break;
 
                 case "4":
-                    //DeleteAPerson();
+                    DeleteAPerson();
                     break;
 
                 case "5":
@@ -225,6 +230,9 @@ namespace PersonDBApp
 
             return true;
         }
+
+
+
         #endregion
 
 
@@ -310,60 +318,3 @@ namespace PersonDBApp
         #endregion
     }
 }
-
-
-
-//} while (Console.ReadKey().Key != ConsoleKey.Escape);
-
-
-//#region Creating People:
-
-//var p1 = new Person()
-//{
-//    Fornavn = "John",
-//    Mellemnavn = "Romby",
-//    Efternavn = "Andersson",
-//    Noter = "Mig selv.",
-//};
-
-//new Email()
-//{
-//    PersonID = p1.PersonID,
-//    EmailAdr = "romby@outlook.com",
-//    Type = "Privat",
-//};
-
-//new Telefon()
-//{
-//    PersonID = p1.PersonID,
-//    Nummer = "30954607",
-//    Type = "iPhone",
-//    Selskab = "Telia",
-//};
-
-//new Adresse()
-//{
-//    PersonID = p1.PersonID,
-//    Vejnavn = "Møllegade",
-//    Nummer = "8",
-//    Postnummer = "8000",
-//    Bynavn = "Aarhus C",
-//};
-
-//var p2 = new Person()
-//{
-//    Fornavn = "Maya",
-//    Mellemnavn = "Romby",
-//    Efternavn = "Andersson",
-//    Noter = "Min første datter.",
-//};
-
-//var p3 = new Person()
-//{
-//    Fornavn = "Gry",
-//    Mellemnavn = "Romby",
-//    Efternavn = "Andersson",
-//    Noter = "Min anden datter.",
-//};
-
-//#endregion

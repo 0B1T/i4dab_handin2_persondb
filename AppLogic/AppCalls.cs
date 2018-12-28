@@ -50,9 +50,9 @@ namespace AppLogic
         // Update (Put) Utility Calls:
         #region UPDATE
 
-        public void UpdatePer(Person currentPerson)
+        public void UpdatePer(Person currentPerson, string newFN, string newMN, string newEN, string newNote)
         {
-            new PersonDBUtil().UpdatePeople(ref currentPerson);
+            new PersonDBUtil().UpdatePeople(ref currentPerson, newFN, newMN, newEN, newNote);
         }
 
         public void UpdateAdr(Person currentPerson)

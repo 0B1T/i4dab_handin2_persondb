@@ -36,10 +36,10 @@ namespace Infrastructure
             get
             {
                 // Local Server:
-                var connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
+                //var connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
 
                 // AU Server:
-                //var connection = new SqlConnection(@"Data Source=st-i4dab.uni.au.dk;User ID=E18I4DABau518762;Password=E18I4DABau518762;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                var connection = new SqlConnection(@"Data Source=st-i4dab.uni.au.dk;User ID=E18I4DABau518762;Password=E18I4DABau518762;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
                 connection.Open();
 
@@ -171,22 +171,18 @@ namespace Infrastructure
         }
 
         // Update (Put) Person function:
-        public void UpdatePeople(ref Person per)
+        public void UpdatePeople(ref Person per, string newFN, string newMN, string newEN, string newNote)
         {
-            var updateStringParam = @"UPDATE [Person]
-                                        SET Fornavn=@Fornavn, Mellemnavn=@Mellemnavn, Efternavn=@Efternavn, Noter=@Noter 
-                                        WHERE PersonID=@PersonID";
+            var pers = new Person();
+            pers = per;
+            DeletePersonFromDB(ref per);
 
-            using (var cmd = new SqlCommand(updateStringParam, OpenConnection))
-            {
-                cmd.Parameters.AddWithValue("@PersonID", per.PersonID);
-                cmd.Parameters.AddWithValue("@Fornavn", per.Fornavn);
-                cmd.Parameters.AddWithValue("@Mellemnavn", per.Mellemnavn);
-                cmd.Parameters.AddWithValue("@Efternavn", per.Efternavn);
-                cmd.Parameters.AddWithValue("@Noter", per.Noter);
+            pers.Fornavn = newFN;
+            pers.Mellemnavn = newMN;
+            pers.Efternavn = newEN;
+            pers.Noter = newNote;
 
-                cmd.ExecuteNonQuery();
-            }
+            AddPersonToDB(ref pers);
         }
 
         

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AppLogic;
 using DomainModel;
 
@@ -153,7 +154,7 @@ namespace PersonDBApp
         #endregion
 
 
-        private static void ShowAllEntriesCompact()
+        private static List<Person> ShowAllEntriesCompact()
         {
             Console.Clear();
 
@@ -161,12 +162,16 @@ namespace PersonDBApp
 
             Console.WriteLine("\n*** START OF LIST ***\n");
 
-            foreach (var p in new AppCalls().ReadAllPepsCompact())
+            var listPer = new AppCalls().ReadAllPepsExpanded();
+
+            foreach (var p in listPer)
             {
                 Console.WriteLine($"{p.PersonID} {p.Fornavn} {p.Mellemnavn} {p.Efternavn}");
             }
 
             Console.WriteLine("\n*** END OF LIST ***\n\n");
+
+            return listPer;
         }
 
         private static void ShowAllEntriesExpanded()
@@ -190,12 +195,22 @@ namespace PersonDBApp
         {
             Console.Clear();
 
-            ShowAllEntriesCompact();
+            var listPer = ShowAllEntriesCompact();
+            var updPer = new Person();
+
             Console.Write("Type in the ID of the person you wish to update: ");
 
             int.TryParse(Console.ReadLine(), out var pid);
 
-            while (UpdateMenuChoice(RenderUpdateMenu(pid), pid)) { }
+            foreach (var p in listPer)
+            {
+                if (p.PersonID == pid)
+                {
+                    updPer = p;
+                }
+            }
+
+            while (UpdateMenuChoice(RenderUpdateMenu(pid), ref updPer)) { }
         }
 
         private static void DeleteAPerson()
@@ -305,28 +320,28 @@ namespace PersonDBApp
             return Console.ReadLine();
         }
 
-        private static bool UpdateMenuChoice(string choice, int pid)
+        private static bool UpdateMenuChoice(string choice, ref Person per)
         {
             switch (choice)
             {
                 case "1":
-                    UpdPerson(pid);
+                    UpdPerson(ref per);
                     break;
 
                 case "2":
-                    UpdAddress(pid);
+                    UpdAddress(ref per);
                     break;
 
                 case "3":
-                    UpdAltAddress(pid);
+                    UpdAltAddress(ref per);
                     break;
 
                 case "4":
-                    UpdEmail(pid);
+                    UpdEmail(ref per);
                     break;
 
                 case "5":
-                    UpdPhone(pid);
+                    UpdPhone(ref per);
                     break;
 
                 case "6":
@@ -342,27 +357,43 @@ namespace PersonDBApp
             return true;
         }
 
-        private static void UpdPerson(int pid)
+        private static void UpdPerson(ref Person per)
+        {
+            string newFN, newMN, newEN, newNote;
+
+            Console.WriteLine("\nEnter new data in person:\n");
+
+            Console.Write("First name: ");
+            newFN = Console.ReadLine();
+
+            Console.Write("Middle name: ");
+            newMN = Console.ReadLine();
+
+            Console.Write("Last name: ");
+            newEN = Console.ReadLine();
+
+            Console.Write("Note: ");
+            newNote = Console.ReadLine();
+
+            new AppCalls().UpdatePer(per, newFN, newMN, newEN, newNote);
+        }
+
+        private static void UpdAddress(ref Person per)
         {
             
         }
 
-        private static void UpdAddress(int pid)
+        private static void UpdAltAddress(ref Person per)
+        {
+
+        }
+
+        private static void UpdEmail(ref Person per)
         {
             
         }
 
-        private static void UpdAltAddress(int pid)
-        {
-
-        }
-
-        private static void UpdEmail(int pid)
-        {
-            
-        }
-
-        private static void UpdPhone(int pid)
+        private static void UpdPhone(ref Person per)
         {
             
         }

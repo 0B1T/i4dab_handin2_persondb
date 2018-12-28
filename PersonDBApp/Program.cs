@@ -103,7 +103,14 @@ namespace PersonDBApp
             Console.Write("Type of address (e.g. summerhouse, etc.): ");
             _altAdr.Type = Console.ReadLine();
 
-            if (_altAdr.Vejnavn == "" || _altAdr.Vejnavn.Length < 2) return;
+            if (_altAdr.Vejnavn == "" || _altAdr.Vejnavn.Length < 2)
+            {
+                _altAdr.Vejnavn = "";
+                _altAdr.Nummer = "";
+                _altAdr.Postnummer = "";
+                _altAdr.Bynavn = "";
+                _altAdr.Type = "none";
+            }
 
             _altAdr.PersonID = per.PersonID; // Linking to correct person id.
             new AppCalls().CreateAltAdr(_altAdr); // Adding to DB.
@@ -146,15 +153,15 @@ namespace PersonDBApp
         #endregion
 
 
-        private static void ShowAllEntries()
+        private static void ShowAllEntriesCompact()
         {
             Console.Clear();
 
-            Console.WriteLine("The following list of people are currently stored in the database...");
+            Console.WriteLine("The following list (compact view) of people are currently stored in the database...");
 
             Console.WriteLine("\n*** START OF LIST ***\n");
 
-            foreach (var p in new AppCalls().ReadPer())
+            foreach (var p in new AppCalls().ReadAllPepsCompact())
             {
                 Console.WriteLine($"{p.PersonID} {p.Fornavn} {p.Mellemnavn} {p.Efternavn}");
             }
@@ -162,11 +169,28 @@ namespace PersonDBApp
             Console.WriteLine("\n*** END OF LIST ***\n\n");
         }
 
+        private static void ShowAllEntriesExpanded()
+        {
+            Console.Clear();
+
+            Console.WriteLine("The following list (expanded view) of people are currently stored in the database...");
+
+            Console.WriteLine("\n*** START OF LIST ***\n");
+
+            foreach (var p in new AppCalls().ReadAllPepsExpanded())
+            {
+                Console.WriteLine($"{p.PersonID} {p.Fornavn} {p.Mellemnavn} {p.Efternavn} {p.Adresse} {p.AltAdresse} {p.Email} {p.Telefon}");
+            }
+
+            Console.WriteLine("\n*** END OF LIST ***\n\n");
+        }
+
+
         private static void UpdateExistingPerson()
         {
             Console.Clear();
 
-            ShowAllEntries();
+            ShowAllEntriesCompact();
             Console.Write("Type in the ID of the person you wish to update: ");
 
             int.TryParse(Console.ReadLine(), out var pid);
@@ -178,12 +202,12 @@ namespace PersonDBApp
         {
             Console.Clear();
 
-            ShowAllEntries();
+            ShowAllEntriesCompact();
             Console.Write("Type in the ID of the person you wish to delete: ");
 
             int.TryParse(Console.ReadLine(), out var pid);
 
-            foreach (var p in new AppCalls().ReadPer())
+            foreach (var p in new AppCalls().ReadAllPepsCompact())
             {
                 if (p.PersonID != pid) continue;
 
@@ -217,7 +241,25 @@ namespace PersonDBApp
                     break;
 
                 case "2":
-                    ShowAllEntries();
+                    Console.WriteLine("1. Compact view.");
+                    Console.WriteLine("2. Expanded view.");
+                    Console.Write(": ");
+
+                    switch (Console.ReadLine())
+                    {
+                        case "1":
+                            ShowAllEntriesCompact();
+                            break;
+
+                        case "2":
+                            ShowAllEntriesExpanded();
+                            break;
+
+                        default:
+                            Console.WriteLine("\nError: no such choice.\n");
+                            break;
+                    }
+
                     break;
 
                 case "3":
@@ -231,7 +273,7 @@ namespace PersonDBApp
                 case "5":
                     Console.Clear();
                     Console.WriteLine("EXITING...\n");
-                    Console.WriteLine("Press any key.");
+                    Console.Write("Press any key.");
                     return false;
 
                 default:

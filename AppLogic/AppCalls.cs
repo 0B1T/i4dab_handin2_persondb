@@ -33,14 +33,18 @@ namespace AppLogic
         {
             new PersonDBUtil().AddTelefonToDB(ref newPhone);
         }
-
         #endregion
 
 
         // Read (Get) Utility Calls:
-        public List<Person> ReadPer()
+        public List<Person> ReadAllPepsCompact()
         {
-            return new PersonDBUtil().ReadPeople();
+            return new PersonDBUtil().ReadPeopleCompact();
+        }
+
+        public List<Person> ReadAllPepsExpanded()
+        {
+            return new PersonDBUtil().ReadPeopleExpanded();
         }
 
         // Update (Put) Utility Calls:

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using DomainModel;
 
 namespace Infrastructure
@@ -70,7 +71,7 @@ namespace Infrastructure
         }
     
         // Read (Get) Person function:
-        public List<Person> ReadPeople()
+        public List<Person> ReadPeopleCompact()
         {
             var readStringParam = @"SELECT * FROM Person";
 
@@ -89,6 +90,78 @@ namespace Infrastructure
                     per.Mellemnavn = (string)rdr["Mellemnavn"];
                     per.Efternavn = (string)rdr["Efternavn"];
                     per.Noter = (string)rdr["Noter"];
+
+                    eachPerson.Add(per);
+                }
+
+                return eachPerson;
+            }
+        }
+
+        // Read (Get) all data function:
+        public List<Person> ReadPeopleExpanded()
+        {
+            var readStringParam = @"SELECT	*
+                                    FROM	Person INNER JOIN
+		                                    Adresse ON Person.PersonID = Adresse.PersonID INNER JOIN
+		                                    AltAdresse ON Person.PersonID = AltAdresse.PersonID INNER JOIN
+                                            Email ON Person.PersonID = Email.PersonID INNER JOIN
+		                                    Telefon ON Person.PersonID = Telefon.PersonID";
+
+            using (var cmd = new SqlCommand(readStringParam, OpenConnection))
+            {
+                var rdr = cmd.ExecuteReader();
+
+                var eachPerson = new List<Person>();
+
+                while (rdr.Read())
+                {
+                    var per = new Person();
+                    per.Adresse = new List<Adresse>();
+                    per.AltAdresse = new List<AltAdresse>();
+                    per.Email = new List<Email>();
+                    per.Telefon = new List<Telefon>();
+
+                    var adr = new Adresse();
+                    var altAdr = new AltAdresse();
+                    var email = new Email();
+                    var tlf = new Telefon();
+
+                    per.PersonID = (int)rdr["PersonID"];
+                    per.Fornavn = (string)rdr["Fornavn"];
+                    per.Mellemnavn = (string)rdr["Mellemnavn"];
+                    per.Efternavn = (string)rdr["Efternavn"];
+                    per.Noter = (string)rdr["Noter"];
+
+                    adr.AdresseID = (int) rdr["AdresseID"];
+                    adr.Vejnavn = (string) rdr["Vejnavn"];
+                    adr.Nummer = (string) rdr["Nummer"];
+                    adr.Postnummer = (string) rdr["Postnummer"];
+                    adr.Bynavn = (string) rdr["Bynavn"];
+                    adr.PersonID = (int) rdr["PersonID"];
+                    per.Adresse.Add(adr);
+
+                    altAdr.AltAdresseID = (int)rdr["AltAdresseID"];
+                    altAdr.Vejnavn = (string)rdr["Vejnavn"];
+                    altAdr.Nummer = (string)rdr["Nummer"];
+                    altAdr.Postnummer = (string)rdr["Postnummer"];
+                    altAdr.Bynavn = (string)rdr["Bynavn"];
+                    altAdr.Type = (string)rdr["Type"];
+                    altAdr.PersonID = (int)rdr["PersonID"];
+                    per.AltAdresse.Add(altAdr);
+
+                    email.EmailID = (int)rdr["EmailID"];
+                    email.EmailAdr = (string)rdr["EmailAdr"];
+                    email.Type = (string)rdr["Type"];
+                    email.PersonID = (int)rdr["PersonID"];
+                    per.Email.Add(email);
+
+                    tlf.TelefonID = (int)rdr["TelefonID"];
+                    tlf.Nummer = (string)rdr["Nummer"];
+                    tlf.Selskab = (string)rdr["Selskab"];
+                    tlf.Type = (string)rdr["Type"];
+                    tlf.PersonID = (int)rdr["PersonID"];
+                    per.Telefon.Add(tlf);
 
                     eachPerson.Add(per);
                 }
@@ -116,9 +189,32 @@ namespace Infrastructure
             }
         }
 
+        
         // Delete Person function:
         public void DeletePersonFromDB(ref Person per)
         {
+            var allPeps = ReadPeopleExpanded();
+            var adr = new Adresse();
+            var altAdr = new AltAdresse();
+            var email = new Email();
+            var tlf = new Telefon();
+
+            foreach (var p in allPeps)
+            {
+                if (p.PersonID == per.PersonID)
+                {
+                    adr = p.Adresse.First();
+                    altAdr = p.AltAdresse.First();
+                    email = p.Email.First();
+                    tlf = p.Telefon.First();
+                }
+            }
+
+            DeleteAdr(ref adr);
+            DeleteAltAdr(ref altAdr);
+            DeleteEmail(ref email);
+            DeletePhone(ref tlf);
+
             var deleteStringParam = @"DELETE FROM [Person] WHERE (PersonID=@PersonID)";
 
             using (var cmd = new SqlCommand(deleteStringParam, OpenConnection))
@@ -130,6 +226,63 @@ namespace Infrastructure
                 per = null;
             }
         }
+
+        private void DeleteAdr(ref Adresse adr)
+        {
+            var deleteStringParam = @"DELETE FROM [Adresse] WHERE (AdresseID=@AdresseID)";
+
+            using (var cmd = new SqlCommand(deleteStringParam, OpenConnection))
+            {
+                cmd.Parameters.AddWithValue("@AdresseID", adr.AdresseID);
+
+                cmd.ExecuteNonQuery();
+
+                adr = null;
+            }
+        }
+
+        private void DeleteAltAdr(ref AltAdresse altAdr)
+        {
+            var deleteStringParam = @"DELETE FROM [AltAdresse] WHERE (AltAdresseID=@AltAdresseID)";
+
+            using (var cmd = new SqlCommand(deleteStringParam, OpenConnection))
+            {
+                cmd.Parameters.AddWithValue("@AltAdresseID", altAdr.AltAdresseID);
+
+                cmd.ExecuteNonQuery();
+
+                altAdr = null;
+            }
+        }
+
+        private void DeleteEmail(ref Email email)
+        {
+            var deleteStringParam = @"DELETE FROM [Email] WHERE (EmailID=@EmailID)";
+
+            using (var cmd = new SqlCommand(deleteStringParam, OpenConnection))
+            {
+                cmd.Parameters.AddWithValue("@EmailID", email.EmailID);
+
+                cmd.ExecuteNonQuery();
+
+                email = null;
+            }
+        }
+
+        private void DeletePhone(ref Telefon tlf)
+        {
+            var deleteStringParam = @"DELETE FROM [Telefon] WHERE (TelefonID=@TelefonID)";
+
+            using (var cmd = new SqlCommand(deleteStringParam, OpenConnection))
+            {
+                cmd.Parameters.AddWithValue("@TelefonID", tlf.TelefonID);
+
+                cmd.ExecuteNonQuery();
+
+                tlf = null;
+            }
+        }
+
         #endregion
 
 

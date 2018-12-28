@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <None Include="Scripts\TestScript1.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\AltAdresse.sql" />

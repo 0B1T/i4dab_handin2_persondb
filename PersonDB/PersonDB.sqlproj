@@ -70,4 +70,7 @@
     <Build Include="dbo\Adresse.sql" />
     <Build Include="dbo\Telefon.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="PersonDB.refactorlog" />
+  </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
 --
 CREATE TABLE Email (
     [EmailID]        INT IDENTITY NOT NULL,
-    [Email]       VARCHAR(50) NOT NULL,
+    [EmailAdr]       VARCHAR(50) NOT NULL,
     [PersonID]       INT NOT NULL,
     [Type]       VARCHAR(50) NOT NULL,
 CONSTRAINT pk_Email PRIMARY KEY CLUSTERED ([EmailID]),

@@ -27,121 +27,120 @@ namespace PersonDBApp
         {
             Console.Clear();
 
-            var pid = AddPerson();
-            AddAddress(pid);
-            AddAltAddress(pid);
-            AddEmail(pid);
-            AddPhone(pid);
+            var per = AddPerson();
+            AddAddress(ref per);
+            AddAltAddress(ref per);
+            AddEmail(ref per);
+            AddPhone(ref per);
         }
 
-        private static int AddPerson()
+        private static Person AddPerson()
         {
             _person = new Person();
 
-            Console.WriteLine("Please fill in all the questions below:\n");
+            Console.WriteLine("Please fill in your personal info below:\n");
 
-            Console.WriteLine("What is your first name?");
+            Console.Write("First name: ");
             _person.Fornavn = Console.ReadLine();
 
-            Console.WriteLine("What is your middle name? (this can remain blank)");
+            Console.Write("Middle name (this can remain blank): ");
             _person.Mellemnavn = Console.ReadLine();
 
-            Console.WriteLine("What is you last name?");
+            Console.Write("Last name: ");
             _person.Efternavn = Console.ReadLine();
 
-            Console.WriteLine("Please write a short note about yourself.");
+            Console.WriteLine("Please write a short note about yourself: ");
             _person.Noter = Console.ReadLine();
 
             Console.WriteLine("\nThank you.");
 
             new AppCalls().CreatePer(_person); // Adding to DB.
 
-            return _person.PersonID; // Returning id of this person.
+            return _person; // Returning this person.
         }
 
-        private static void AddAddress(int pid)
+        private static void AddAddress(ref Person per)
         {
             _adr = new Adresse();
 
             Console.WriteLine("\nNow please fill in your primary address:\n");
 
-            Console.WriteLine("Street name: ");
-            _adr.Vejnavn = Console.Read().ToString();
+            Console.Write("Street name: ");
+            _adr.Vejnavn = Console.ReadLine();
 
-            Console.WriteLine("Number: ");
-            _adr.Nummer = Console.Read().ToString();
+            Console.Write("Number: ");
+            _adr.Nummer = Console.ReadLine();
 
-            Console.WriteLine("Postal code: ");
-            _adr.Postnummer = Console.Read().ToString();
+            Console.Write("Postal code: ");
+            _adr.Postnummer = Console.ReadLine();
 
-            Console.WriteLine("City: ");
-            _adr.Bynavn = Console.Read().ToString();
+            Console.Write("City: ");
+            _adr.Bynavn = Console.ReadLine();
 
-            _adr.PersonID = pid; // Linking to correct person id.
+            _adr.PersonID = per.PersonID; // Linking to correct person id.
 
             new AppCalls().CreateAdr(_adr); // Adding to DB.
         }
 
-        private static void AddAltAddress(int pid)
+        private static void AddAltAddress(ref Person per)
         {
             _altAdr = new AltAdresse();
 
-            Console.WriteLine("Now please fill in your alternative address (If you have one otherwise leave all blank):");
+            Console.WriteLine("\nNow please fill in your alternative address (If you have one, otherwise you can leave all blank):\n");
 
-            Console.WriteLine("Street name: ");
-            _altAdr.Vejnavn = Console.Read().ToString();
+            Console.Write("Street name: ");
+            _altAdr.Vejnavn = Console.ReadLine();
 
-            Console.WriteLine("Number: ");
-            _altAdr.Nummer = Console.Read().ToString();
+            Console.Write("Number: ");
+            _altAdr.Nummer = Console.ReadLine();
 
-            Console.WriteLine("Postal code: ");
-            _altAdr.Postnummer = Console.Read().ToString();
+            Console.Write("Postal code: ");
+            _altAdr.Postnummer = Console.ReadLine();
 
-            Console.WriteLine("City: ");
-            _altAdr.Bynavn = Console.Read().ToString();
+            Console.Write("City: ");
+            _altAdr.Bynavn = Console.ReadLine();
 
-            Console.WriteLine("Type of address (e.g. summerhouse, etc.)");
-            _altAdr.Type = Console.Read().ToString();
+            Console.Write("Type of address (e.g. summerhouse, etc.): ");
+            _altAdr.Type = Console.ReadLine();
 
-            _altAdr.PersonID = pid; // Linking to correct person id.
+            if (_altAdr.Vejnavn == "" || _altAdr.Vejnavn.Length < 2) return;
 
+            _altAdr.PersonID = per.PersonID; // Linking to correct person id.
             new AppCalls().CreateAltAdr(_altAdr); // Adding to DB.
         }
 
-        private static void AddEmail(int pid)
+        private static void AddEmail(ref Person per)
         {
             _email = new Email();
 
-            Console.WriteLine("Now please fill in your email address:");
+            Console.WriteLine("\nNow please fill in your email address:\n");
 
-            Console.WriteLine("Email Address: ");
-            _email.EmailAdr = Console.Read().ToString();
+            Console.Write("Email Address: ");
+            _email.EmailAdr = Console.ReadLine();
 
-            Console.WriteLine("Type of email (e.g. private, work, etc.): ");
-            _email.Type = Console.Read().ToString();
+            Console.Write("Type of email (e.g. private, work, etc.): ");
+            _email.Type = Console.ReadLine();
 
-            _email.PersonID = pid; // Linking to correct person id.
-
+            _email.PersonID = per.PersonID; // Linking to correct person id.
             new AppCalls().CreateEmail(_email); // Adding to DB.
         }
 
-        private static void AddPhone(int pid)
+        private static void AddPhone(ref Person per)
         {
             _tlf = new Telefon();
 
-            Console.WriteLine("And last, but not least, please fill in your phone number:");
+            Console.WriteLine("\nAnd last, but not least, please fill in your phone number:\n");
 
-            Console.WriteLine("Phone number: ");
-            _tlf.Nummer = Console.Read().ToString();
+            Console.Write("Phone number: ");
+            _tlf.Nummer = Console.ReadLine();
 
-            Console.WriteLine("Service provider: ");
-            _tlf.Selskab = Console.Read().ToString();
+            Console.Write("Service provider: ");
+            _tlf.Selskab = Console.ReadLine();
 
-            Console.WriteLine("Type of phone (e.g. private, work, etc.): ");
-            _tlf.Type = Console.Read().ToString();
+            Console.Write("Type of phone (e.g. private, work, etc.): ");
+            _tlf.Type = Console.ReadLine();
 
-            _tlf.PersonID = pid; // Linking to correct person id.
-
+            _tlf.PersonID = per.PersonID; // Linking to correct person id.
             new AppCalls().CreatePhone(_tlf); // Adding to DB.
         }
         #endregion
@@ -177,7 +176,19 @@ namespace PersonDBApp
 
         private static void DeleteAPerson()
         {
+            Console.Clear();
 
+            ShowAllEntries();
+            Console.Write("Type in the ID of the person you wish to delete: ");
+
+            int.TryParse(Console.ReadLine(), out var pid);
+
+            foreach (var p in new AppCalls().ReadPer())
+            {
+                if (p.PersonID != pid) continue;
+
+                new AppCalls().DeletePer(p);
+            }
         }
 
 
@@ -219,7 +230,8 @@ namespace PersonDBApp
 
                 case "5":
                     Console.Clear();
-                    Console.WriteLine("EXITING...");
+                    Console.WriteLine("EXITING...\n");
+                    Console.WriteLine("Press any key.");
                     return false;
 
                 default:
@@ -230,9 +242,6 @@ namespace PersonDBApp
 
             return true;
         }
-
-
-
         #endregion
 
 
@@ -242,7 +251,7 @@ namespace PersonDBApp
         {
             Console.WriteLine("*** HELLO AND WELCOME TO THE UPDATE MENU ***");
             Console.WriteLine($"\nPlease choose what to update for person with ID: {pid}.");
-            Console.WriteLine("1. Person-data (Ex. name and notes).");
+            Console.WriteLine("1. Person-data (e.g. name and notes).");
             Console.WriteLine("2. Address.");
             Console.WriteLine("3. Alternative address.");
             Console.WriteLine("4. Email.");
